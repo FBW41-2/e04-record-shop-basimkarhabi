@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
+const customMiddleware = require('./Middleware/customMiddleware')
+
 
 /** ROUTERS */
 const indexRouter = require('./routes/index');
@@ -16,12 +18,12 @@ const app = express();
 
 /** LOGGING */
 app.use(logger('dev'));
-
+//MIddleweare
+app.use(customMiddleware)
 
 /** SETTING UP LOWDB */
 const adapter = new FileSync('data/db.json');
 const db = low(adapter);
-db.defaults({ records:[] }).write();
 
 
 /** REQUEST PARSERS */

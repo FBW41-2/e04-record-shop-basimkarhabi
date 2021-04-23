@@ -5,13 +5,16 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
-
+//Import MangoDb 
+const {MongoClient} = require('mongodb');
 /** ROUTERS */
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const recordsRouter = require('./routes/records');
 const ordersRouter = require('./routes/orders');
 const { setCors } = require("./middleware/security");
+const { allowedNodeEnvironmentFlags } = require('process');
+
 
 /** INIT */
 const app = express();
@@ -19,6 +22,34 @@ const app = express();
 /** LOGGING */
 app.use(logger('dev'));
 
+/**CONNECT TO MONGODB **/
+async function connectDB() {//                                                 Db name
+    const url = "mongodb+srv://DBUSER:DB123456uSER@cluster0.ds0gb.mongodb.net/record-shop?retryWrites=true&w=majority"
+    const client = new MongoClient(url);
+
+    try {
+        await client.connect();
+        //console.log("DB",clint.db().collection('record'))
+        // assign db to global object
+        app.locals.db =client.db('')  // we could her write the name of our Db 
+        await listDatabases(client);
+     
+    } catch (error) {
+        console.error(error);
+//that will help to stop connection if we did not uas it 
+    } 
+    
+}
+async function listDatabases(client){
+
+    databasesList = await client.db().admin().listDatabases();
+
+    console.log("Databases:");
+    databasesList.databases.forEach(db => console.log(` - ${db.name}`));
+
+}
+
+connectDB().catch(console.error)
 
 /** SETTING UP LOWDB */
 const adapter = new FileSync('data/db.json');

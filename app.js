@@ -29,7 +29,6 @@ async function connectDB() {//                                                 D
 
     try {
         await client.connect();
-        //console.log("DB",clint.db().collection('record'))
         // assign db to global object
         app.locals.db =client.db('')  // we could her write the name of our Db 
         await listDatabases(client);
@@ -41,9 +40,7 @@ async function connectDB() {//                                                 D
     
 }
 async function listDatabases(client){
-
     databasesList = await client.db().admin().listDatabases();
-
     console.log("Databases:");
     databasesList.databases.forEach(db => console.log(` - ${db.name}`));
 

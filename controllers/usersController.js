@@ -1,6 +1,5 @@
 const mongodb = require('mongodb')
 
-
 exports.getUsers = (req, res, next) => {
     req.app.locals.db.collection('users').find().toArray((err,docs)=>{
         res.json(docs)

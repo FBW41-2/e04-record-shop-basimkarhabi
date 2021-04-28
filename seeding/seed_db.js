@@ -33,4 +33,8 @@ async function connectDB() {
     
 }
 
+
 connectDB().catch(console.error)
+
+
+exports.modules= seed_db

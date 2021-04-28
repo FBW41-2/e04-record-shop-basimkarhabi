@@ -1,5 +1,4 @@
 const mongodb = require('mongodb')
-
 exports.getOrders = (req, res, next) => {
     req.app.locals.db.collection('orders').find().toArray((err,docs)=>{
         res.json(docs)
@@ -14,7 +13,6 @@ exports.getOrder = (req, res, next) => {
     const order = db.get('orders').find({_id:new mongodb.ObjectID(id)},(err,result)=>{
         res.json(result)
     });
-    res.status(200).send(order);
 }
 
 exports.deleteOrder = (req, res, next) => {

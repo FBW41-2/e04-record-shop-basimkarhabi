@@ -2,6 +2,7 @@
   "name": "record-shop",
   "version": "0.0.0",
   "private": true,
+  "type":"module",
   "scripts": {
     "start": "node ./bin/www",
     "seed_db": "node seeding/seed_db.js",

@@ -2,6 +2,7 @@ var faker = require("faker");
 const mongoose = require("mongoose");
 const User = require("../models/User");
 
+
 console.log("I shall purge all users");
 
 (async function() {

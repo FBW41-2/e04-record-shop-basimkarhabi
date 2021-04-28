@@ -3,8 +3,9 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-const low = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
+//to make it 
+require('dotenv').config()
+//GEtting Start & Import 
 const mongoose = require("mongoose");
 
 /** ROUTERS */
@@ -20,19 +21,22 @@ const app = express();
 /** LOGGING */
 app.use(logger("dev"));
 
+//1
 /**CONNECT TO DB */
-mongoose.connect("mongodb://localhost:27017/record-shop", {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true
+mongoose.connect(
+  process.env.NODE_ENV == 'test' ?
+      'mongodb://localhost:27017/record-shop' :
+      `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_URL}`,
+  {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true
 });
+// That message to show us the connect or not 
+mongoose.connection.on("error",console.error)
+mongoose.connection.on("open",()=>{console.log("Connected !!")})
 
-mongoose.connection.on("error", console.error);
-mongoose.connection.on("open", function() {
-  console.log("Database connection established...");
-});
-
-/** SETTING UP LOWDB */
+/** SETTING UP LOWDB 
 const adapter = new FileSync("data/db.json");
 const db = low(adapter);
 db.defaults({
@@ -40,7 +44,7 @@ db.defaults({
   users: [],
   orders: []
 }).write();
-
+*/
 /** REQUEST PARSERS */
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

@@ -1,46 +1,45 @@
-const low = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
-const adapter = new FileSync("data/db.json");
-const db = low(adapter);
+const Record =require('../models/Record')
 
 exports.getRecords = (req, res, next) => {
-  const records = db.get("records").value();
-  res.status(200).send(records);
+  Record.find((err, records) => {
+      if (err) return console.error(err);
+      res.json(records)
+  })
 };
 
+// get specific record
 exports.getRecord = (req, res, next) => {
   const { id } = req.params;
-  const record = db.get("records").find({ id });
-  res.status(200).send(record);
-};
+    console.log("get record", req.id)
+    Record.findById(id, (err, entry) => {
+      if (err) return res.json({error: err});
+      res.json(entry)
+    })
+  };
 
 exports.deleteRecord = (req, res, next) => {
-  const { id } = req.params;
-  const record = db
-    .get("records")
-    .remove({ id })
-    .write();
-  res.status(200).send(record);
+  const {id}= req.params;
+  Record.findByIdAndRemove(id,(err,entry)=>{
+    if(err) return res.json({error:err})
+    res.json({deleted:entry})
+  })
 };
 
 exports.updateRecord = (req, res, next) => {
-  const { id } = req.params;
-  const dt = req.body;
-  const record = db
-    .get("records")
-    .find({ id })
-    .assign(dt)
-    .write();
-  res.status(200).send(record);
+  const {id} = req.params
+  Record.findByIdAndUpdate(id,req.body,{new:true},(err,entry)=>{
+    if(err) return res.json({error:err})
+    res.json(entry)
+  })
+
 };
 
-exports.addRecord = (req, res, next) => {
-  const record = req.body;
-  db.get("records")
-    .push(record)
-    .last()
-    .assign({ id: Date.now().toString() })
-    .write();
 
-  res.status(200).send(record);
+exports.addRecord = (req, res, next) => {
+  record=req.body
+  Record.create(record,(err,entry)=>{
+    if (err) return res.json({error:err})
+    res.json(entry)
+  })
+
 };

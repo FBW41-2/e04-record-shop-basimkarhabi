@@ -15,11 +15,33 @@ const recordsRouter = require("./routes/records");
 const ordersRouter = require("./routes/orders");
 const { setCors } = require("./middleware/security");
 
+const mySql = require('mySql')
+const sqlConfig = require('./config/sql')
 /** INIT */
 const app = express();
 
 /** LOGGING */
 app.use(logger("dev"));
+
+
+/*********DATABASE CONNECTION *******/
+var con = mysql.createConnection({
+    host : "",
+    user:"",
+    password :"",
+    database:""
+})
+
+con.connect(function (err){
+  if (err) throw err;
+  console.log("connected To Mysql!!!")
+  var sql = "SELECT * From customers"
+  con.query(sql,function(err,result){
+        if (err) throw err;
+        console.log(result)
+      })
+})
+
 
 //1
 /**CONNECT TO DB */

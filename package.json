@@ -13,11 +13,12 @@
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
-    "faker": "^4.1.0",
+    "faker": "^5.5.3",
     "http-errors": "^1.7.3",
     "lowdb": "^1.0.0",
     "mongoose": "^5.12.6",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "mysql": "^2.18.1"
   },
   "devDependencies": {
     "nodemon": "^1.19.2"

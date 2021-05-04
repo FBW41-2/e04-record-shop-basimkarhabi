@@ -1,10 +1,19 @@
 const Record =require('../models/Record')
 
 exports.getRecords = (req, res, next) => {
-  Record.find((err, records) => {
+  const {recordsPerPage,pageNumber,sortOrder,sortField,search} = req.query
+
+//access Db
+  Record.find({title:{$regex:search,$options:"i"}},(err, records) => {
       if (err) return console.error(err);
       res.json(records)
   })
+
+  .limit(Number(recordsPerPage))
+  //Start from specific entry number
+  .skip(pageNumber * recordsPerPage)
+  .sort({[sortField]:sortOrder})
+  
 };
 
 // get specific record
@@ -33,7 +42,6 @@ exports.updateRecord = (req, res, next) => {
   })
 
 };
-
 
 exports.addRecord = (req, res, next) => {
   record=req.body

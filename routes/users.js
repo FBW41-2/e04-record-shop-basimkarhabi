@@ -1,5 +1,17 @@
 const express = require("express");
 const router = express.Router();
+const {body} =require("express-validator");
+
+
+const userValidators = [
+  body('email')
+  .isEmail().
+  withMessage('This is not a valid email address')
+  body('password')
+  .isStrongPassword()
+  .withMessage('This password is not secure enough')
+]
+
 
 const {
   getUsers,
@@ -12,7 +24,7 @@ const {
 router
   .route("/")
   .get(getUsers)
-  .post(addUser);
+  .post(userValidators,addUser);
 
 router
   .route("/:id")
